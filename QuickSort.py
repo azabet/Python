@@ -7,7 +7,7 @@ import random
 
 def Partition(a,p):
   """
-  Usage: Partition(array, pivot)
+  Usage: (left,right) = Partition(array, pivot)
   Partitions an array around a pivot such that the left elements <=
   and the right elements >= the pivot value.
   """
