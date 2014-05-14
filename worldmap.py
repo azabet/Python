@@ -12,9 +12,9 @@ from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
 from matplotlib.colorbar import ColorbarBase
 
-def plot(countries,values,label='',verbose=False):
+def plot(countries,values,label='',clim=None,verbose=False):
     """
-    Usage: worldmap.plot(countries, values, label)
+    Usage: worldmap.plot(countries, values [, label] [, clim])
     """
     countries_shp = shpreader.natural_earth(resolution='110m',category='cultural',
                                             name='admin_0_countries')
@@ -23,12 +23,18 @@ def plot(countries,values,label='',verbose=False):
     ax = plt.axes(projection=ccrs.PlateCarree())
     ## Create a colormap
     cmap = plt.get_cmap('RdYlGn_r')
-    val = values[np.isfinite(values)]
-    mean = val.mean()
-    std = val.std()
-    norm = Normalize(vmin=0,vmax=mean+2*std)
+    if clim:
+       vmin = clim[0]
+       vmax = clim[1]
+    else:
+       val = values[np.isfinite(values)]
+       mean = val.mean()
+       std = val.std()
+       vmin = mean-2*std
+       vmax = mean+2*std
+    norm = Normalize(vmin=vmin,vmax=vmax)
     smap = ScalarMappable(norm=norm,cmap=cmap)
-    ax2 = fig.add_axes([0.3, 0.9, 0.4, 0.05])
+    ax2 = fig.add_axes([0.3, 0.18, 0.4, 0.03])
     cbar = ColorbarBase(ax2,cmap=cmap,norm=norm,orientation='horizontal')
     cbar.set_label(label)
     ## Add countries to the map
