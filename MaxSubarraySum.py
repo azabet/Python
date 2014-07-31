@@ -28,6 +28,7 @@ def MaxSubarray(a):
     
     for x in a[1:]:
         currentSum += x
+        currentSubarray.append(x)
         if currentSum < 0:
             # If current sum is negative,
             # then start a new subarray
@@ -37,10 +38,7 @@ def MaxSubarray(a):
             # If current sum is larger than the max,
             # then store the current subarray as the maxSubarray
             maxSum = currentSum
-            currentSubarray.append(x)
             maxSubarray = currentSubarray[:]
-        else:
-            currentSubarray.append(x)
     return maxSubarray, maxSum
 
 def main():
